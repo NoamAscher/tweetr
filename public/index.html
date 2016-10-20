@@ -19,14 +19,20 @@
     <!-- new-tweet CSS -->
     <link rel="stylesheet" href="/styles/new-tweet.css" type="text/css" />
 
+    <!-- tweet-container CSS -->
+    <link rel="stylesheet" href="/styles/tweet-container.css" type="text/css" />
+
     <!-- External JS -->
     <script type="text/javascript" src="/vendor/jquery-2.2.3.min.js"></script>
 
     <!-- App JS -->
     <script type="text/javascript" src="/scripts/app.js"></script>
 
-    <!-- Compser Character Counter -->
+    <!-- Composer Character Counter -->
     <script type="text/javascript" src="/scripts/composer-char-counter.js"></script>
+
+    <!-- Tweet Generator -->
+    <script type="text/javascript" src="/scripts/tweet-generator.js"></script>
   </head>
 
   <body>
@@ -50,6 +56,28 @@
           <span class="counter">140</span>
         </form>
       </section>
+
+      <section id="tweet-container">
+
+        <article class = "full-tweet">
+          <header>
+            <img src="/images/avatar.png">
+            <span class="name">Bill Fields</span>
+            <span class="handle">@MrFields</span>
+          </header>
+          <span class="tweet-content">Little Tweet Here</span>
+          <footer>
+            <span class="days-ago">10 days ago</span>
+            <span class="icon-set">
+              <img class="icon" src="/images/heart_sm.png">
+              <img class="icon" src="/images/share_sm.png">
+              <img class="icon" src="/images/flag_sm.png">
+            </span>
+          </footer>
+        </article>
+
+      </section>
+
     </main>
 
   </body>

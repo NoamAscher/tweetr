@@ -1,0 +1,97 @@
+.full-tweet {
+  display: block;
+  margin: 2em;
+  background-color: #fff;
+  border-radius: 7px;
+  border: 1px solid #ccc;
+}
+
+.full-tweet header {
+  background-color: #f3f3f3;
+  border-radius: 7px 7px 0 0;
+}
+
+.full-tweet header img {
+  max-width: 18%;
+  height: auto;
+  opacity: .75;
+  padding: 8px;
+  padding-bottom: 5px;
+}
+
+.full-tweet .name {
+  position: absolute;
+  float: left;
+  padding-top: 9px;
+  padding-left: 4px;
+  font-weight: bold;
+  font-size: 150%;
+  color: #667e85;
+}
+
+.full-tweet .handle {
+  position: relative;
+  float: right;
+  padding-top: 16px;
+  padding-right: 9px;
+  font-size: 80%;
+  color: #a3a3a3;
+
+}
+
+.full-tweet .tweet-content {
+  display: block;
+  padding-top: 40px;
+  padding-left: 13px;
+  height: 100px;
+  color: #244751;
+}
+
+.full-tweet footer {
+  display: block;
+  height: 38px;
+  border-top: 1px solid #ccc;
+}
+
+.full-tweet .days-ago {
+  display: inline-block;
+  padding: 12px;
+  padding-left: 8px;
+  color: #b6b6b6;
+  font-size: 71%;
+  color: #144751;
+}
+
+.full-tweet .icon-set {
+  display: none;   /* to display later */
+  width: 150px;
+  height: 38px;
+  float: right;
+  padding: 10px;
+}
+
+.full-tweet .icon {
+  max-width: 15%;
+  height: auto;
+  float: right;
+  padding: 3px;
+}
+
+
+/* hover pseudo-classes */
+
+.full-tweet:hover img {
+  opacity: 1;
+}
+
+.full-tweet:hover .name {
+  color: #244751;
+}
+
+.full-tweet:hover .handle {
+  color: #737373;
+}
+
+.full-tweet:hover .icon-set {
+  display: block;
+}

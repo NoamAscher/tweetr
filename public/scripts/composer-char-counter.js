@@ -1,7 +1,4 @@
-//console.log('c-c-c here!!'); <-- yes it works =)
-
 $('document').ready(function() {
-  console.log('ready');
   const initColor = $('.counter').css("color");
   $('textarea').on('keyup', function() {
     //console.log($(this)['context'].selectionEnd);

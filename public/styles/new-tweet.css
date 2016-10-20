@@ -1,13 +1,7 @@
 .new-tweet {
-  margin-top: 2em;
-  margin-left: 2em;
-  margin-right: 2em;
-  margin-bottom: 2em;
+  margin: 2em;
   background-color: #eee;
-  padding-top: 12px;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-bottom: 12px;
+  padding: 12px;
   border-radius: 7px;
   border: 1px solid #ccc;
 }
@@ -21,20 +15,14 @@
   align-items: center;
   width: 100%;
   margin-top: 20px;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  padding-left: 4px;
-  padding-right: 4px;
-
+  padding: 6px 6px 4px 4px;
 }
 
 .new-tweet .counter {
   float: right;
   font-size: smaller;
   font-style: italic;
-  padding-top: 5px;
-  padding-right: 4px;
-
+  padding-top: 5px 0 0 4px;
 }
 
 .new-tweet input {
