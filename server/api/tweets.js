@@ -6,6 +6,12 @@ const tweets  = express.Router();
 
 module.exports = function(db) {
 
+  function sendError(res, message)
+  {
+    res.status(400);
+    res.send(JSON.stringify({ message }));
+  }
+
   tweets.get("/", function(req, res) {
     let tweets = db.getTweets();
     // simulate delay
@@ -16,8 +22,9 @@ module.exports = function(db) {
 
   tweets.post("/", function(req, res) {
     if (!req.body.text) {
-      res.status(400);
-      return res.send("{'error': 'invalid request'}\n");
+      return sendError(res, 'Tweet cannot be empty');
+    } else if (req.body.text.length > 140) {
+      return sendError(res, 'Tweet cannot be longer than 140 characters');
     }
 
     const user = req.body.user ? req.body.user : User.generateRandomUser();
@@ -29,7 +36,7 @@ module.exports = function(db) {
       created_at: Date.now()
     };
     db.saveTweet(tweet);
-    return res.send();
+    return res.send(tweet);
   });
 
   return tweets;

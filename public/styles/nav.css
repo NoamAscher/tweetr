@@ -21,3 +21,24 @@
   font-size: 200%;
   line-height: 2.5;
 }
+
+#nav-bar .compose {
+  display: block;
+  float right;
+  height: 50px;
+  width: 85px;
+  margin: 15px 0 0 570px;
+  padding-top: 15px;
+  text-align: center;
+  color: #00a087;
+  background-color: #e7fdff;
+  border-color: #000000;
+  border-radius: 7px;
+}
+
+/* hover pseudo-class */
+
+#nav-bar .compose:hover  {
+  color: #000000;
+  background-color: #ffffff;
+}

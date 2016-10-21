@@ -16,107 +16,113 @@ function escape(str) {
   return div.innerHTML;
 };
 
+// helper function to calculate days ago. Just calculates milliseconds and rounds down.
+var daysAgoCalc = function(timestamp) {
+  let unixFormat = Date.now() - timestamp;
+  let dayNum = Math.floor(unixFormat / (24*60*60*1000));
+  return `${dayNum} days ago`;
+};
 
-// the data to be rendered
-var data = [
-  {
-    "user": {
-      "name": "Newton",
-      "avatars": {
-        "small":   "https://vanillicon.com/788e533873e80d2002fa14e1412b4188_50.png",
-        "regular": "https://vanillicon.com/788e533873e80d2002fa14e1412b4188.png",
-        "large":   "https://vanillicon.com/788e533873e80d2002fa14e1412b4188_200.png"
-      },
-      "handle": "@SirIsaac"
-    },
-    "content": {
-      "text": "If I have seen further it is by standing on the shoulders of giants"
-    },
-    "created_at": 1461116232227
-  },
-  {
-    "user": {
-      "name": "Descartes",
-      "avatars": {
-        "small":   "https://vanillicon.com/7b89b0d8280b93e2ba68841436c0bebc_50.png",
-        "regular": "https://vanillicon.com/7b89b0d8280b93e2ba68841436c0bebc.png",
-        "large":   "https://vanillicon.com/7b89b0d8280b93e2ba68841436c0bebc_200.png"
-      },
-      "handle": "@rd" },
-    "content": {
-      "text": "Je pense , donc je suis"
-    },
-    "created_at": 1461113959088
-  },
-  {
-    "user": {
-      "name": "Johann von Goethe",
-      "avatars": {
-        //"small": "<script>alert('uh oh!');</script>",
-        "small":   "https://vanillicon.com/d55cf8e18b47d4baaf60c006a0de39e1_50.png",
-        "regular": "https://vanillicon.com/d55cf8e18b47d4baaf60c006a0de39e1.png",
-        "large":   "https://vanillicon.com/d55cf8e18b47d4baaf60c006a0de39e1_200.png"
-      },
-      "handle": "@johann49"
-      //"handle": "<script>alert('uh oh!');</script>"
-    },
-    "content": {
-      "text": "Es ist nichts schrecklicher als eine tätige Unwissenheit."
-    //},
-    },
-    "created_at": 1461113796368
-  }
-];
+// renders an individual tweet
+var createTweetElement = function(tweetObject) {
+  var tweet = $("<article>").addClass("full-tweet");
 
-// jQuery to be added
-$(function() {    //$('document').ready() shortcut
+  var header = $("<header>");
+  var image = $("<img>").attr("src", tweetObject.user.avatars.small);
+  var name = $("<span>").addClass("name").html(`${escape(tweetObject.user.name)}`);
+  var handle = $("<span>").addClass("handle").html(`${escape(tweetObject.user.handle)}`);
 
-  // helper function to calculate days ago. Just calculates milliseconds and rounds down.
-  var daysAgoCalc = function(timestamp) {
-    let unixFormat = Date.now() - timestamp;
-    let dayNum = Math.floor(unixFormat / (24*60*60*1000));
-    return `${dayNum} days ago`;
-  };
+  header.append(image).append(name).append(handle);
 
-  // renders an individual tweet
-  var createTweetElement = function(tweetObject) {
-    var tweet = $("<article>").addClass("full-tweet");
+  var content = $("<span>").addClass("tweet-content").html(`${escape(tweetObject.content.text)}`);
 
-    var header = $("<header>");
-    var image = $("<img>").attr("src", tweetObject.user.avatars.small);
-    var name = $("<span>").addClass("name").html(`${escape(tweetObject.user.name)}`);
-    var handle = $("<span>").addClass("handle").html(`${escape(tweetObject.user.handle)}`);
+  var footer = $("<footer>");
+  var daysAgo = $("<span>").addClass("days-ago").html(daysAgoCalc(tweetObject.created_at));
 
-    header.append(image).append(name).append(handle);
+  var iconSet = $("<span>").addClass("icon-set");
+  var heart = $("<img>").addClass("icon").attr("src", "/images/heart_sm.png");
+  var share = $("<img>").addClass("icon").attr("src", "/images/share_sm.png");
+  var flag = $("<img>").addClass("icon").attr("src", "/images/flag_sm.png");
 
-    var content = $("<span>").addClass("tweet-content").html(`${escape(tweetObject.content.text)}`);
+  iconSet.append(heart).append(share).append(flag);
 
-    var footer = $("<footer>");
-    var daysAgo = $("<span>").addClass("days-ago").html(daysAgoCalc(tweetObject.created_at));
+  footer.append(daysAgo).append(iconSet);
 
-    var iconSet = $("<span>").addClass("icon-set");
-    var heart = $("<img>").addClass("icon").attr("src", "/images/heart_sm.png");
-    var share = $("<img>").addClass("icon").attr("src", "/images/share_sm.png");
-    var flag = $("<img>").addClass("icon").attr("src", "/images/flag_sm.png");
+  tweet.append(header).append(content).append(footer);
 
-    iconSet.append(heart).append(share).append(flag);
+  return tweet;
+};
 
-    footer.append(daysAgo).append(iconSet);
+// renders all the tweets in the data by calling createTweetElement on each
+var renderTweets = function(tweets) {
+  var dom = tweets.reverse().map(createTweetElement);
+  $('#tweet-container').empty().append(dom);
+};
 
-    tweet.append(header).append(content).append(footer);
+// url decoder written by http://stackoverflow.com/users/544453/anshuman
+// at http://stackoverflow.com/questions/4292914/javascript-url-decode-function
+// function urldecode(str) {
+//   return decodeURIComponent((str+'').replace(/\+/g, '%20'));
+// }
 
-    return tweet;
-  };
+var loadTweets = function() {
+  $.get('/tweets').then(renderTweets);
+};
 
-  // renders all the tweets in the data by calling createTweetElement on each
-  var renderTweets = function(tweets) {
-    tweets.forEach(function(tweet) {
-      $('#tweet-container').append(createTweetElement(tweet));
-    });
-  };
+
+// Main jQuery function - $('document').ready() shortcut
+$(function() {
+  // Error handling
+  $( document ).ajaxError(function(e, req, xhr) {
+    console.info(req.responseText);
+    var error;
+    try
+    {
+      error = JSON.parse(req.responseText);
+    }
+    catch(e)
+    {
+      //
+      error = e
+    }
+    $('.counter').empty().html(error.message);
+    $('.counter').css("color", "red");
+  });
 
   // renders the data
-  renderTweets(data);
+  //renderTweets(data);
+
+  // form submit ajax: prevents submit, serializes data, creates a tweet
+  $('.new-tweet').find('form').on('submit', function(event) {
+    event.preventDefault();
+    // var tweetText = urldecode(($(this).serialize()).slice(5));
+    var $textarea = $('textarea', this); //equivalent to $(this).find('textarea');
+
+    // error checks
+    // if ($textarea.val().length === 0) {
+      // flashError('no tweet yet');
+    // } else if ($textarea.val().length > 140) {
+      // flashError('tweet too long');
+
+    // } else {
+
+    $.post('/tweets', $(this).serialize()).then(function(newTweet)
+    {
+      $textarea.val('');
+      loadTweets();
+    });
+  });
+
+  loadTweets();
+
+  $('#nav-bar').find('.compose').on('click', function(event) {
+    if ($('.new-tweet').is(':hidden') ) {
+      $('.new-tweet').slideDown();
+      $('.new-tweet').find('textarea').focus();
+    } else {
+      $('.new-tweet').slideUp();
+    }
+  });
 
 });
 
