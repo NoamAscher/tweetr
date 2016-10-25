@@ -5,25 +5,24 @@ const express = require('express');
 const tweets  = express.Router();
 const db      = require("../lib/db");
 
+// Export to be used on app.js
 module.exports = function() {
 
+  // Error handling
   function sendError(res, message)
   {
     res.status(400);
     res.send(JSON.stringify({ message }));
   }
 
+  // Load the tweets from the database
   tweets.get("/", function(req, res) {
-    let tweets = db.all((err, allTweets) => {
+    let tweets = db.all((err, allTweets) => {         // calls lib/db.js
       res.send(allTweets);
     });
   });
-    // simulate delay ??
-  //   setTimeout(() => {
-  //     return res.json(tweets);
-  //   }, 300);
-  // });
 
+  // Post error message or a new tweet to the page and database.
   tweets.post("/", function(req, res) {
     if (!req.body.text) {
       return sendError(res, 'Tweet cannot be empty');
@@ -39,7 +38,7 @@ module.exports = function() {
       },
       created_at: Date.now()
     };
-    db.create(tweet, (err, allTweets) => {
+    db.create(tweet, (err, allTweets) => {          // calls lib/db.js
       return res.send(tweet);
     });
   });

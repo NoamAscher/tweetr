@@ -16,14 +16,14 @@ function escape(str) {
   return div.innerHTML;
 };
 
-// helper function to calculate days ago. Just calculates milliseconds and rounds down.
+// Helper function to calculate days ago. Just calculates milliseconds and rounds down.
 var daysAgoCalc = function(timestamp) {
   let unixFormat = Date.now() - timestamp;
   let dayNum = Math.floor(unixFormat / (24*60*60*1000));
   return `${dayNum} days ago`;
 };
 
-// renders an individual tweet
+// Renders an individual tweet
 var createTweetElement = function(tweetObject) {
   var tweet = $("<article>").addClass("full-tweet");
 
@@ -53,13 +53,13 @@ var createTweetElement = function(tweetObject) {
   return tweet;
 };
 
-// renders all the tweets in the data by calling createTweetElement on each
+// Renders all the tweets in the data by calling createTweetElement on each
 var renderTweets = function(tweets) {
   var dom = tweets.reverse().map(createTweetElement);
   $('#tweet-container').empty().append(dom);
 };
 
-// loads and then renders the tweets
+// Loads and then renders the tweets
 var loadTweets = function() {
   $.get('/tweets').then(renderTweets);
 };
@@ -69,7 +69,7 @@ var loadTweets = function() {
 $(function() {
 
   // Error handling
-  $( document ).ajaxError(function(e, req, xhr) {
+  $(document).ajaxError(function(e, req, xhr) {
     var error;
     try
     {
@@ -77,14 +77,14 @@ $(function() {
     }
     catch(e)
     {
-      //
       error = e
     }
+
     $('.counter').empty().html(error.message);
     $('.counter').css("color", "red");
   });
 
-  // form submit ajax: prevents submit, serializes data, creates a tweet
+  // Form submit ajax: prevents submit, serializes data, creates a tweet
   $('.new-tweet').find('form').on('submit', function(event) {
     event.preventDefault();
 
@@ -96,8 +96,10 @@ $(function() {
     });
   });
 
+  // Load the tweets here:
   loadTweets();
 
+  // Compose button functionality
   $('#nav-bar').find('.compose').on('click', function(event) {
     if ($('.new-tweet').is(':hidden') ) {
       $('.new-tweet').slideDown();

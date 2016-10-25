@@ -3,7 +3,6 @@
 
 const mongodb     = require("mongodb");
 const MongoClient = mongodb.MongoClient;
-const ObjectId    = mongodb.ObjectId; // to destroy a tweet
 const MONGODB_URI = "mongodb://127.0.0.1:27017/tweeter";
 
 
@@ -18,7 +17,7 @@ MongoClient.connect(MONGODB_URI, (err, db) => {
 
   const tweetsCollection = db.collection('tweets');
 
-  // find, sort, return all objects in tweets collection
+  // Find, sort, return all objects in tweets collection
   Tweets.all = function all (cb) {
     return tweetsCollection.find({}).sort({id:-1}).toArray(cb);
   };
@@ -43,7 +42,7 @@ MongoClient.connect(MONGODB_URI, (err, db) => {
 
   // Signal handlers make sure to call closeConnection before
   // exiting
-  //
+
   // INT signal, e.g. Ctrl-C
   process.on('SIGINT', closeConnection);
   // TERM signal, e.g. kill
