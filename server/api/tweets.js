@@ -1,10 +1,11 @@
 "use strict";
 
-const User    = require("../lib/user-helper")
+const User    = require("../lib/user-helper");
 const express = require('express');
 const tweets  = express.Router();
+const db      = require("../lib/db");
 
-module.exports = function(db) {
+module.exports = function() {
 
   function sendError(res, message)
   {
@@ -13,12 +14,15 @@ module.exports = function(db) {
   }
 
   tweets.get("/", function(req, res) {
-    let tweets = db.getTweets();
-    // simulate delay
-    setTimeout(() => {
-      return res.json(tweets);
-    }, 300);
+    let tweets = db.all((err, allTweets) => {
+      res.send(allTweets);
+    });
   });
+    // simulate delay ??
+  //   setTimeout(() => {
+  //     return res.json(tweets);
+  //   }, 300);
+  // });
 
   tweets.post("/", function(req, res) {
     if (!req.body.text) {
@@ -35,10 +39,11 @@ module.exports = function(db) {
       },
       created_at: Date.now()
     };
-    db.saveTweet(tweet);
-    return res.send(tweet);
+    db.create(tweet, (err, allTweets) => {
+      return res.send(tweet);
+    });
   });
 
   return tweets;
 
-}
+};

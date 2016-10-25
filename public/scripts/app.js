@@ -59,12 +59,7 @@ var renderTweets = function(tweets) {
   $('#tweet-container').empty().append(dom);
 };
 
-// url decoder written by http://stackoverflow.com/users/544453/anshuman
-// at http://stackoverflow.com/questions/4292914/javascript-url-decode-function
-// function urldecode(str) {
-//   return decodeURIComponent((str+'').replace(/\+/g, '%20'));
-// }
-
+// loads and then renders the tweets
 var loadTweets = function() {
   $.get('/tweets').then(renderTweets);
 };
@@ -72,9 +67,9 @@ var loadTweets = function() {
 
 // Main jQuery function - $('document').ready() shortcut
 $(function() {
+
   // Error handling
   $( document ).ajaxError(function(e, req, xhr) {
-    console.info(req.responseText);
     var error;
     try
     {
@@ -89,23 +84,11 @@ $(function() {
     $('.counter').css("color", "red");
   });
 
-  // renders the data
-  //renderTweets(data);
-
   // form submit ajax: prevents submit, serializes data, creates a tweet
   $('.new-tweet').find('form').on('submit', function(event) {
     event.preventDefault();
-    // var tweetText = urldecode(($(this).serialize()).slice(5));
+
     var $textarea = $('textarea', this); //equivalent to $(this).find('textarea');
-
-    // error checks
-    // if ($textarea.val().length === 0) {
-      // flashError('no tweet yet');
-    // } else if ($textarea.val().length > 140) {
-      // flashError('tweet too long');
-
-    // } else {
-
     $.post('/tweets', $(this).serialize()).then(function(newTweet)
     {
       $textarea.val('');
